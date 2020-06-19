@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent" >
+    <ImageView
+        android:id="@+id/plane_image"
+        android:layout_width="1000dp"
+        android:layout_height="1000dp"
+        android:src="@drawable/plane_image"
+        android:layout_marginStart="200dp"
+        android:layout_marginEnd="-215dp"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/background_image" />
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".MainActivity" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            android:text="@string/text_menu_instructions" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:src="@drawable/dotted_line"
+            android:layerType="software"
+            android:contentDescription="@string/dotted_line" />
+        <TextView
+            android:id="@+id/list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="@string/list_title" />
+        <ImageView
+            android:layout_width="190dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/dotted_line"
+            android:layerType="software"
+            android:contentDescription="@string/dotted_line" />
+        <TextView
+            android:id="@+id/first_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="20dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/Localhost1" />
+        <TextView
+            android:id="@+id/second_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="20dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/Localhost2" />
+        <TextView
+            android:id="@+id/third_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="20dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/Localhost3" />
+        <TextView
+            android:id="@+id/fourth_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingVertical="20dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/Localhost4" />
+        <TextView
+            android:id="@+id/fifth_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:layout_marginHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/Localhost5" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/ip_textbox"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:hint="@string/hint"
+                android:importantForAutofill="no"
+                android:inputType="number|numberDecimal"
+                android:digits="0123456789."
+                android:maxLines="1"
+                tools:ignore="TextFields" />
+
+            <Button
+                android:id="@+id/connect_button"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="250dp"
+                android:text="@string/connect_button"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">FlightMobileApp</string>
+    <string name="Localhost1"> Localhost1 </string>
+    <string name="Localhost2"> Localhost2 </string>
+    <string name="Localhost3"> Localhost3 </string>
+    <string name="Localhost4"> Localhost4 </string>
+    <string name="Localhost5"> Localhost5 </string>
+    <string name="connect_button"> Connect </string>
+    <string name="text_menu_instructions"> Please enter an IP address, or choose an
+        existing address from the list below. </string>
+    <string name="hint"> Enter IP address </string>
+    <string name="list_title"> Latest connections: </string>
+    <string name="dotted_line"> Dotted line </string>
+    <string name="background_image"> Background Image </string>
+</resources>
