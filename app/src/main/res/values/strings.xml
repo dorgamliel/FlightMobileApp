@@ -12,4 +12,6 @@
     <string name="list_title"> Latest connections: </string>
     <string name="dotted_line"> Dotted line </string>
     <string name="background_image"> Background Image </string>
+    <string name="throttle"> Throttle </string>
+    <string name="rudder"> Rudder </string>
 </resources>

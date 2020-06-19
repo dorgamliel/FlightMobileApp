@@ -7,16 +7,57 @@
     android:orientation="vertical"
     tools:context=".MainActivity"
     android:weightSum="2">
+
     <View
         android:id="@+id/simulator_window"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
     </View>
-    <View
-        android:id="@+id/joystick_window"
-        android:layout_width="match_parent"
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-    </View>
+
+        <include
+            layout="@layout/joystick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"/>
+        <SeekBar
+            android:id="@+id/rudder"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="250dp"
+            android:max="200"
+            android:thumbTint="@color/grey"
+            android:progress="0"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="265dp"
+            android:text="@string/rudder"/>
+
+        <SeekBar
+            android:layout_width="192dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="-20dp"
+            android:layout_marginStart="-25dp"
+            android:thumbTint="@color/grey"
+            android:rotation="270" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="270"
+            android:layout_marginTop="120dp"
+            android:layout_marginStart="25dp"
+            android:text="@string/throttle"/>
+
+    </RelativeLayout>
+
 </LinearLayout>
