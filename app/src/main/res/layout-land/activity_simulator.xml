@@ -4,33 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context=".SimulatorActivity"
     android:weightSum="2">
 
-    <!--Simulator screen-->
-    <View
-        android:id="@+id/simulator_window"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-    </View>
-
+    <!--Joystick screen-->
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="fill_parent"
+        android:layout_width="0dp"
         android:layout_weight="1">
-
-        <SeekBar
-            android:id="@+id/throttle"
-            android:layout_width="230dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginStart="-44dp"
-            android:max="200"
-            android:progress="0"
-            android:rotation="270"
-            android:thumbTint="@color/grey" />
 
         <SeekBar
             android:id="@+id/rudder"
@@ -40,7 +22,7 @@
             android:layout_marginTop="250dp"
             android:max="200"
             android:thumbTint="@color/grey"
-            android:progress="100"/>
+            android:progress="0"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,13 +30,25 @@
             android:layout_marginTop="265dp"
             android:text="@string/rudder"/>
 
+        <SeekBar
+            android:id="@+id/throttle"
+            android:layout_width="230dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="-78dp"
+            android:max="200"
+            android:progress="0"
+            android:rotation="270"
+            android:thumbTint="@color/grey" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:rotation="270"
             android:layout_marginTop="120dp"
-            android:layout_marginStart="25dp"
+            android:layout_marginStart="-5dp"
             android:text="@string/throttle"/>
+
         <ImageView
             android:id="@+id/spacer"
             android:layout_width="140dp"
@@ -62,6 +56,7 @@
             android:layout_marginStart="90dp"
             android:onClick="none"
             android:contentDescription="@string/spacer" />
+
         <include
             layout="@layout/joystick"
             android:layout_width="wrap_content"
@@ -69,8 +64,14 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"/>
 
-
-
     </RelativeLayout>
+
+    <!--Simulator screen-->
+    <View
+        android:id="@+id/simulator_window"
+        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1">
+    </View>
 
 </LinearLayout>

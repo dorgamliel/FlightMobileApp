@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval" >
             <solid android:color="#D3D3D3"/>
@@ -7,4 +7,41 @@
             <size android:width="200dp" android:height="200dp"/>
         </shape>
     </item>
-</selector>
+    <!--Left Arrow-->
+    <item android:gravity="left" android:left="10dp">
+        <shape android:shape="line">
+            <solid android:color="#D3D3D3"/>
+            <stroke android:color="#000000" android:width="2dp" android:dashGap="2dp" android:dashWidth="1dp"/>
+            <size android:width="20dp" android:height="21dp"/>
+        </shape>
+    </item>
+    <!--Right Arrow-->
+    <item android:gravity="right" android:right="10dp">
+        <shape android:shape="line">
+            <solid android:color="#D3D3D3"/>
+            <stroke android:color="#000000" android:width="2dp" android:dashGap="2dp" android:dashWidth="1dp"/>
+            <size android:width="25dp" android:height="21dp"/>
+        </shape>
+    </item>
+    <!--Up Arrow-->
+    <item android:gravity="center" android:bottom="160dp">
+        <rotate android:fromDegrees="90">
+            <shape android:shape="line">
+                <solid android:color="#D3D3D3"/>
+                <stroke android:color="#000000" android:width="2dp" android:dashGap="2dp" android:dashWidth="1dp"/>
+                <size android:width="25dp" android:height="21dp"/>
+            </shape>
+        </rotate>
+    </item>
+    <!--Down Arrow-->
+    <item android:gravity="center" android:top="160dp">
+        <rotate android:fromDegrees="90">
+            <shape android:shape="line">
+                <solid android:color="#D3D3D3"/>
+                <stroke android:color="#000000" android:width="2dp" android:dashGap="2dp" android:dashWidth="1dp"/>
+                <size android:width="25dp" android:height="21dp"/>
+            </shape>
+        </rotate>
+    </item>
+
+</layer-list>

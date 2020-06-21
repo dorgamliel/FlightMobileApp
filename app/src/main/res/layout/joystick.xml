@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
-
+    <!--outer circle-->
     <ImageView
         android:id="@+id/outer_circle"
         android:layout_width="wrap_content"
@@ -11,41 +11,9 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/outer_circle_shape"
-        android:scaleType="center" />
-    <!--Arrows-->
-    <!--<ImageView
-        android:id="@+id/left_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="90dp"
-        android:scaleX="-1"
-        android:src="@drawable/triangle"/>
-    <ImageView
-        android:id="@+id/up_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="190dp"
-        android:layout_marginTop="255dp"
-        android:rotation="-90"
-        android:src="@drawable/triangle"/>
-    <ImageView
-        android:id="@+id/right_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="295dp"
-        android:src="@drawable/triangle"/>
-    <ImageView
-        android:id="@+id/down_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="455dp"
-        android:rotation="90"
-        android:src="@drawable/triangle"/>
--->
+        android:scaleType="center"
+        android:contentDescription="@string/outer_circle" />
+    <!--inner circle-->
     <ImageView
         android:id="@+id/inner_circle"
         android:layout_width="wrap_content"
@@ -53,15 +21,17 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/inner_circle_shape"
-        android:scaleType="center"  />
-
-
-    <ImageView
-        android:id="@+id/joystick_circle"
+        android:scaleType="center"
+        android:contentDescription="@string/inner_circle" />
+    <!--joystick circle-->
+    <ImageButton
+        android:id="@+id/joystick_stick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/joystick_circle_shape"
-        android:scaleType="center"  />
+        android:src="@drawable/joystick_stick_shape"
+        android:scaleType="center"
+        android:background="?android:selectableItemBackground"
+        android:contentDescription="@string/joystick_stick" />
 </RelativeLayout>
