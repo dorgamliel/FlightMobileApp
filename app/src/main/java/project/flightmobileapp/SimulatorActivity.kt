@@ -1,6 +1,7 @@
 package project.flightmobileapp
 
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -26,6 +27,7 @@ class SimulatorActivity : AppCompatActivity() {
         finish()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_simulator)
@@ -56,8 +58,8 @@ class SimulatorActivity : AppCompatActivity() {
                     val angle = getAngle( centerX.toDouble(), centerY.toDouble(),
                         view.x.toDouble(), view.y.toDouble())
                     //Change x and y axis according to stick movement.
-                    view.animate().x((inner_circle.width * cos(angle)).toFloat())
-                        .y((inner_circle.height * sin(angle)).toFloat())
+                    view.animate().x((210 * cos(angle)).toFloat() + centerX)
+                        .y((210 * sin(angle)).toFloat() + centerY)
                         .setDuration(0)
                         .start()
                 }
@@ -77,7 +79,8 @@ class SimulatorActivity : AppCompatActivity() {
     }
 
     private fun getAngle(x: Double, y: Double, x1: Double, y1: Double): Double {
-        return atan2(abs(y1 - y),  abs(x1 - x))
+        val angle = (atan2((y1 - y),  (x1 - x)))
+        return angle
     }
 
     //Disable joystick outer circle button click sound.
