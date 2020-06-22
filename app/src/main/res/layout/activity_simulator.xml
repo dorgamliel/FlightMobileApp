@@ -55,19 +55,12 @@
             android:layout_marginTop="120dp"
             android:layout_marginStart="25dp"
             android:text="@string/throttle"/>
-        <ImageView
-            android:id="@+id/spacer"
-            android:layout_width="140dp"
-            android:layout_height="240dp"
-            android:layout_marginStart="90dp"
-            android:onClick="none"
-            android:contentDescription="@string/spacer" />
         <include
             layout="@layout/joystick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="30dp"/>
 
 
 

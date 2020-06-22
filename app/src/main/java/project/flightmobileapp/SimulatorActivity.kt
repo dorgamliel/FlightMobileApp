@@ -13,93 +13,39 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import io.github.controlwear.virtual.joystick.android.JoystickView
 import kotlinx.android.synthetic.main.activity_simulator.view.*
 import kotlinx.android.synthetic.main.joystick.*
 import kotlinx.android.synthetic.main.joystick.view.*
 import kotlin.math.*
 
 
+
 class SimulatorActivity : AppCompatActivity() {
-    private var centerX: Float = 0F
-    private var centerY: Float  = 0F
-    private var firstClick: Boolean = true
+    private var aileron: Double = 0.0
+    private var prevAileron: Double = 0.0
+    private var elevator: Double = 0.0
+    private var prevElevator: Double = 0.0
     private val positiveButtonClick = { _: DialogInterface, _: Int ->
         finish()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_simulator)
         Log.i("SimulatorActivity", "onCreate Called")
-        //Creating a listener for click events.
-        val listener = View.OnTouchListener(function = {view, motionEvent ->
-            //Click down on button for the first time.
-            if (motionEvent.action == MotionEvent.ACTION_DOWN && firstClick) {
-                centerX = view.x
-                centerY = view.y
-                firstClick = false
+        //Setting listener for joystick.
+        joystickView.setOnMoveListener { angle, strength ->
+            //Setting joystick's aileron and elevator.
+            aileron = cos(Math.toRadians(angle.toDouble())) * strength/100
+            elevator = sin(Math.toRadians(angle.toDouble())) * strength/100
+            //Replace values if difference is more than 1 percent.
+            if (abs(aileron - prevAileron) > 0.01) {
+                prevAileron = aileron
             }
-            Log.i("-y1", view.y.toString())
-            //Moving stick while pressing it.
-            if (motionEvent.action == MotionEvent.ACTION_MOVE) {
-                //Get line length (center position and current stick position).
-                val length = lineLength(view.x.toDouble(), view.y.toDouble(),
-                    centerX.toDouble(), centerY.toDouble())
-                if (length <= 190) {
-                    //Change x and y axis according to stick movement.
-                    view.animate().x((motionEvent.x + view.x) / 1.6F)
-                        .y((motionEvent.y + view.y) / 1.6F)
-                        .setDuration(0)
-                        .start()
-                    Log.i("-y2", view.y.toString())
-
-                } else {
-                    val angle = getAngle( centerX.toDouble(), centerY.toDouble(),
-                        view.x.toDouble(), view.y.toDouble())
-                    //Change x and y axis according to stick movement.
-                    view.animate().x((210 * cos(angle)).toFloat() + centerX)
-                        .y((210 * sin(angle)).toFloat() + centerY)
-                        .setDuration(0)
-                        .start()
-                }
+            if (abs(elevator - prevElevator) > 0.01) {
+                prevElevator = elevator
             }
-            //Releasing press
-            if (motionEvent.action  == MotionEvent.ACTION_UP) {
-                updateStickPosition(view)
-            }
-            true
-        })
-        //Set listener of joystick.
-        joystick_stick.setOnTouchListener(listener)
-    }
-
-    private fun lineLength(x: Double, y: Double, x1: Double, y1: Double): Double {
-        return sqrt((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y))
-    }
-
-    private fun getAngle(x: Double, y: Double, x1: Double, y1: Double): Double {
-        val angle = (atan2((y1 - y),  (x1 - x)))
-        return angle
-    }
-
-    //Disable joystick outer circle button click sound.
-    fun none(view: View) {
-        if (view.spacer != null) {
-            view.spacer.isSoundEffectsEnabled = false
-        }
-    }
-    private fun updateStickPosition(view: View) {
-        //Update stick position with animation.
-        val xAnim = ObjectAnimator.ofFloat(view, "x", centerX)
-        val yAnim = ObjectAnimator.ofFloat(view, "y", centerY)
-        xAnim.apply {
-            duration = 80
-            start()
-        }
-        yAnim.apply {
-            duration = 80
-            start()
         }
     }
 
