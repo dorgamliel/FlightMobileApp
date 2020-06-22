@@ -46,6 +46,7 @@ class SimulatorActivity : AppCompatActivity() {
 
     }
 
+    //Sets joystick listeners.
     private fun setJoystickListeners() {
         //Setting move listener for joystick.
         joystickView.setOnMoveListener (object: JoystickView.OnMoveListener {
@@ -67,6 +68,7 @@ class SimulatorActivity : AppCompatActivity() {
         })
     }
 
+    //Sets seekbars listeners.
     private fun setSeekBarListeners() {
         val rudderSeekBar = findViewById<SeekBar>(R.id.rudderBar)
         rudderSeekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {

@@ -100,35 +100,44 @@ class ConnectionActivity : AppCompatActivity()  {
         val btn: Button = findViewById(R.id.connect_button)
         val box: EditText = findViewById(R.id.ip_textbox)
         //Create an array of all text views in the menu (all IP addresses)
-        val list = arrayListOf<TextView>(
+        val list = getArraylist()
+        btn.setOnClickListener {
+            val address = box.text.toString()
+            //An empty IP address does not affect button.
+            if (address.isNotEmpty()) {
+                connectToServer(address, list)
+            } else {
+                Toast.makeText(this, "Please enter a valid address.",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun connectToServer(address: String, list: ArrayList<TextView>) {
+        //If connection is successful, open simulator activity.
+        if (checkConnection()) {
+            val simulatorActivity = Intent(this, SimulatorActivity::class.java)
+            // Open simulator.
+            startActivity(simulatorActivity)
+            // Updating parameters of IP list ordering function (called from "onRestart")
+            chosenAddress = address
+            chosenList = list
+            //No connection to server.
+        } else {
+            Toast.makeText(this, "Could not connect to server.", Toast.LENGTH_SHORT).show()
+        }
+        //Invalid server address.
+    }
+
+    //Gets list of addresses.
+    private fun getArraylist(): ArrayList<TextView> {
+        return arrayListOf(
             findViewById(R.id.first_address),
             findViewById(R.id.second_address),
             findViewById(R.id.third_address),
             findViewById(R.id.fourth_address),
             findViewById(R.id.fifth_address)
         )
-        btn.setOnClickListener {
-            val address = box.text.toString()
-            //An empty IP address does not affect button.
-            if (address.isNotEmpty()) {
-                //If connection is successful, open simulator activity.
-                if (checkConnection()) {
-                    val simulatorActivity = Intent(this, SimulatorActivity::class.java)
-                    // Open simulator.
-                    startActivity(simulatorActivity)
-                    // Updating parameters of IP list ordering function (called from "onRestart")
-                    chosenAddress = address
-                    chosenList = list
-                    //No connection to server.
-                } else {
-                    Toast.makeText(this, "Could not connect to server.", Toast.LENGTH_SHORT).show()
-                }
-                //Invalid server address.
-            } else {
-                Toast.makeText(this, "Please enter a valid address.",
-                    Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     //TODO - update function.
