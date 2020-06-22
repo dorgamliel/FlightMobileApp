@@ -14,7 +14,4 @@
     <string name="background_image"> Background Image </string>
     <string name="throttle"> Throttle </string>
     <string name="rudder"> Rudder </string>
-    <string name="joystick_circle"> Inner Circle </string>
-    <string name="joystick_stick"> Joystick Circle </string>
-    <string name="spacer"> Prevents no direct touch movement of throttle seekbar. </string>
 </resources>

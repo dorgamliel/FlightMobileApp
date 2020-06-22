@@ -1,25 +1,14 @@
 package project.flightmobileapp
 
-import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
-import android.media.AudioManager
+
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
 import android.widget.SeekBar
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import io.github.controlwear.virtual.joystick.android.JoystickView
-import kotlinx.android.synthetic.main.activity_simulator.*
-import kotlinx.android.synthetic.main.activity_simulator.view.*
-import kotlinx.android.synthetic.main.activity_simulator.view.rudderBar
 import kotlinx.android.synthetic.main.joystick.*
-import kotlinx.android.synthetic.main.joystick.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
