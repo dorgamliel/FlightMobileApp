@@ -22,7 +22,7 @@
         android:layout_weight="1">
 
         <SeekBar
-            android:id="@+id/throttle"
+            android:id="@+id/throttleBar"
             android:layout_width="230dp"
             android:layout_height="200dp"
             android:layout_marginTop="35dp"
@@ -33,7 +33,7 @@
             android:thumbTint="@color/grey" />
 
         <SeekBar
-            android:id="@+id/rudder"
+            android:id="@+id/rudderBar"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
