@@ -65,27 +65,6 @@ class SimulatorActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.IO).launch {  }
             }
         })
-        joystickView.setOnTouchListener(object: View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent): Boolean {
-                Log.i("test", event.action.toString()) ///see event action value
-                if (event.action == MotionEvent.ACTION_BUTTON_RELEASE) {
-                    Log.i("test", "hee2")
-                    //Update stick position with animation.
-                    val xAnim = ObjectAnimator.ofFloat(v, "x", 210F)
-                    val yAnim = ObjectAnimator.ofFloat(v, "y", 210F)
-                    xAnim.apply {
-                        duration = 80
-                        start()
-                    }
-                    yAnim.apply {
-                        duration = 80
-                        start()
-                    }
-                    return false
-                }
-                return false
-            }
-        })
     }
 
     private fun setSeekBarListeners() {
