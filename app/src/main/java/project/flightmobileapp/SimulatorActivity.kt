@@ -50,9 +50,7 @@ class SimulatorActivity : AppCompatActivity() {
                 if (abs(elevator - prevElevator) > 0.01) {
                     prevElevator = elevator
                 }
-                //Async call to server.
-                //TODO - call post function.
-                CoroutineScope(Dispatchers.IO).launch {  }
+                sendCommand()
             }
         })
     }
@@ -65,9 +63,7 @@ class SimulatorActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 rudder = progress.toDouble()
-                //Async call to server.
-                //TODO - call post function.
-                CoroutineScope(Dispatchers.IO).launch {  }
+                sendCommand()
             }
         })
         val throttleSeekBar = findViewById<SeekBar>(R.id.throttleBar)
@@ -79,9 +75,7 @@ class SimulatorActivity : AppCompatActivity() {
             }
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 throttle = progress.toDouble()
-                //Async call to server.
-                //TODO - call post function.
-                CoroutineScope(Dispatchers.IO).launch {  }
+                sendCommand()
             }
         })
     }
@@ -104,6 +98,17 @@ class SimulatorActivity : AppCompatActivity() {
         dialogBuilder.setNegativeButton("Stay") { _, _ -> }
         val b = dialogBuilder.create()
         b.show()
+    }
+
+
+    fun sendCommand() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val command = Command(aileron, elevator, throttle, rudder)
+            val deferedResults = SimulatorApi.retrofitService.postCommand(command)
+            //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
+            var x = deferedResults.await()
+            //TODO: handle a 500 error code
+        }
     }
     override fun onResume() {
         super.onResume()
