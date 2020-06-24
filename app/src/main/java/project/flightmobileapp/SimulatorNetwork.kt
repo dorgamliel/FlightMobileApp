@@ -15,20 +15,22 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Url
 
 
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-private const val BASE_URL = "http://10.0.2.2:52713/api/command/"
 
 
-private val retrofit = Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-    .baseUrl(BASE_URL)
-    .build()
+private var BASE_URL = "http://10.0.2.2:52713/"
+fun setBaseUrl(address : String) {
+    BASE_URL = address
+}
+
+
+
 
 interface SimulatorApiService {
     @GET("all")
@@ -38,13 +40,30 @@ interface SimulatorApiService {
     @POST("/api/command")
     fun postCommand(@Body command : Command): Deferred<Response<Void>>
 
-    @POST("/api/servers")
-    fun postServer(@Body command : ServerCommand): Deferred<Response<Void>>
+    @POST
+    fun connectToServer(@Url serverURL : String): Deferred<Response<Void>>
 
 }
 
+object SimulatorConnectionApi {
+    val retrofitService: SimulatorApiService by lazy {
+        val retrofit = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .baseUrl(BASE_URL)
+            .build()
+        retrofit.create(SimulatorApiService::class.java)
+    }
+}
+
+
 object SimulatorApi {
     val retrofitService: SimulatorApiService by lazy {
+         val retrofit = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .baseUrl(BASE_URL)
+            .build()
         retrofit.create(SimulatorApiService::class.java)
     }
 }

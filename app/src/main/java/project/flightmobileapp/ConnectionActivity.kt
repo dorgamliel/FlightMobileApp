@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
+import java.lang.Exception
 
 class ConnectionActivity : AppCompatActivity()  {
 
@@ -134,7 +135,10 @@ class ConnectionActivity : AppCompatActivity()  {
             //An empty IP address does not affect button.
             if (address.isNotEmpty()) {
                 addToDb(address)
-                connectToServer(address, list)
+                // TODO is this where it should be launched?
+                CoroutineScope(Dispatchers.Main).launch {
+                    connectToServer(address, list)
+                }
             } else {
                 Toast.makeText(this, "Please enter a valid address.",
                     Toast.LENGTH_SHORT).show()
@@ -186,9 +190,40 @@ class ConnectionActivity : AppCompatActivity()  {
         }
     }
 
-    private fun connectToServer(address: String, list: ArrayList<TextView>) {
+    private suspend fun connectToServer(address: String, list: ArrayList<TextView>) {
         //If connection is successful, open simulator activity.
-        if (checkConnection(address, list)) {
+        // TODO should this be in IO thread?
+        //TODO: exception is thrown after 10 seconds. good enough?
+        try {
+            var properAddress = ""
+            if (!address.endsWith("/")) {
+                properAddress = address + "/"
+            } else {
+                properAddress = address
+            }
+            setBaseUrl(address)
+            val connectionURL = properAddress + "api/connect/"
+            val connectResult = SimulatorConnectionApi.retrofitService.connectToServer(connectionURL).await()
+            if (connectResult.isSuccessful) {
+                val simulatorActivity = Intent(this, SimulatorActivity::class.java)
+                setBaseUrl(properAddress)
+                // Open simulator.
+                startActivity(simulatorActivity)
+                // Updating parameters of IP list ordering function (called from "onRestart")
+                chosenAddress = address
+                chosenList = list
+            } else {
+                Toast.makeText(this, "Could not connect to server.", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e : Exception) {
+            Toast.makeText(this, "Could not connect to server.", Toast.LENGTH_SHORT).show()
+        }
+
+
+
+
+
+        /*if (checkConnection(address, list)) {
             val simulatorActivity = Intent(this, SimulatorActivity::class.java)
             // Open simulator.
             startActivity(simulatorActivity)
@@ -198,7 +233,7 @@ class ConnectionActivity : AppCompatActivity()  {
             //No connection to server.
         } else {
             Toast.makeText(this, "Could not connect to server.", Toast.LENGTH_SHORT).show()
-        }
+        }*/
         //Invalid server address.
     }
 
