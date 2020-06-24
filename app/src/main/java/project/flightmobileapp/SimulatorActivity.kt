@@ -11,6 +11,7 @@ import io.github.controlwear.virtual.joystick.android.JoystickView
 import kotlinx.android.synthetic.main.joystick.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.*
 
@@ -62,8 +63,9 @@ class SimulatorActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                rudder = progress.toDouble()
-                sendCommand()
+                rudder = progress.toDouble() / rudderSeekBar.max
+                Log.i("rudder", rudder.toString())
+                //sendCommand()
             }
         })
         val throttleSeekBar = findViewById<SeekBar>(R.id.throttleBar)
@@ -74,7 +76,8 @@ class SimulatorActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                throttle = progress.toDouble()
+                throttle = progress.toDouble() / throttleSeekBar.max
+                Log.i("throttle", throttle.toString())
                 sendCommand()
             }
         })
@@ -87,7 +90,7 @@ class SimulatorActivity : AppCompatActivity() {
     }
 
     //The dialog when there is a connection problem.
-    fun showDialog() {
+    private fun showDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         //Dialog message.
         dialogBuilder.setMessage("It looks like there is a network problem. Would you like " +
@@ -101,7 +104,7 @@ class SimulatorActivity : AppCompatActivity() {
     }
 
 
-    fun sendCommand() {
+    private fun sendCommand() {
         CoroutineScope(Dispatchers.IO).launch {
             val command = Command(aileron, elevator, throttle, rudder)
             val deferedResults = SimulatorApi.retrofitService.postCommand(command)
@@ -110,6 +113,20 @@ class SimulatorActivity : AppCompatActivity() {
             //TODO: handle a 500 error code
         }
     }
+
+    private fun getScreenShots() {
+        CoroutineScope(Dispatchers.IO).launch {
+            while (true) { //TODO - change condition
+                getSingleScreenShot()
+                delay(500)
+            }
+        }
+    }
+
+    private fun getSingleScreenShot() {
+
+    }
+
     override fun onResume() {
         super.onResume()
         Log.i("SimulatorActivity","onResume Called")
