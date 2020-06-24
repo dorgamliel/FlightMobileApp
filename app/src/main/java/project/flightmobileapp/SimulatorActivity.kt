@@ -27,13 +27,14 @@ class SimulatorActivity : AppCompatActivity() {
     private val positiveButtonClick = { _: DialogInterface, _: Int ->
         finish()
     }
+    private var activityFlag: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_simulator)
+        activityFlag = true
         setSeekBarListeners()
         setJoystickListeners()
-
     }
 
     //Sets joystick listeners.
@@ -85,8 +86,8 @@ class SimulatorActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        activityFlag = true
         Log.i("SimulatorActivity", "onStart Called")
-
     }
 
     //The dialog when there is a connection problem.
@@ -116,39 +117,44 @@ class SimulatorActivity : AppCompatActivity() {
 
     private fun getScreenShots() {
         CoroutineScope(Dispatchers.IO).launch {
-            while (true) { //TODO - change condition
-                getSingleScreenShot()
+            //Run as long as activity status is not paused/stopped/destroyed.
+            while (activityFlag) {
+                getOneScreenShot()
                 delay(500)
             }
         }
     }
 
-    private fun getSingleScreenShot() {
-
+    private fun getOneScreenShot() {
     }
 
     override fun onResume() {
         super.onResume()
+        activityFlag = true
         Log.i("SimulatorActivity","onResume Called")
     }
 
     override fun onPause() {
         super.onPause()
+        activityFlag = false
         Log.i("SimulatorActivity","onPause Called")
     }
 
     override fun onStop() {
         super.onStop()
+        activityFlag = false
         Log.i("SimulatorActivity","onStop Called")
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        activityFlag = false
         Log.i("SimulatorActivity","onDestroy Called")
     }
 
     override fun onRestart() {
         super.onRestart()
+        activityFlag = true
         Log.i("SimulatorActivity","onRestart Called")
     }
 

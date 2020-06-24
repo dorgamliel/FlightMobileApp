@@ -188,7 +188,7 @@ class ConnectionActivity : AppCompatActivity()  {
 
     private fun connectToServer(address: String, list: ArrayList<TextView>) {
         //If connection is successful, open simulator activity.
-        if (checkConnection()) {
+        if (checkConnection(address, list)) {
             val simulatorActivity = Intent(this, SimulatorActivity::class.java)
             // Open simulator.
             startActivity(simulatorActivity)
@@ -214,7 +214,19 @@ class ConnectionActivity : AppCompatActivity()  {
     }
 
     //TODO - update function.
-    private fun checkConnection(): Boolean {
+    private fun checkConnection(address: String, list: ArrayList<TextView>): Boolean {
+        /*CoroutineScope(Dispatchers.IO).launch {
+            val command = ServerCommand(address, list.toString())
+            val deferedResults = SimulatorApi.retrofitService.postServer(command)
+            //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
+            var x = deferedResults.await()
+            //TODO: handle a 500 error code
+        }*/
         return true
     }
 }
+
+data class ServerCommand(
+    val id: String,
+    val address: String
+)

@@ -36,7 +36,10 @@ interface SimulatorApiService {
             Deferred<List<SimulatorProperty>>
 
     @POST("/api/command")
-    fun postCommand(@Body comman : Command): Deferred<Response<Void>>
+    fun postCommand(@Body command : Command): Deferred<Response<Void>>
+
+    @POST("/api/servers")
+    fun postServer(@Body command : ServerCommand): Deferred<Response<Void>>
 
 }
 
