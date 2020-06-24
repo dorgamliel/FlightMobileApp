@@ -65,7 +65,7 @@ class SimulatorActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 rudder = progress.toDouble() / rudderSeekBar.max
                 Log.i("rudder", rudder.toString())
-                //sendCommand()
+                sendCommand()
             }
         })
         val throttleSeekBar = findViewById<SeekBar>(R.id.throttleBar)
