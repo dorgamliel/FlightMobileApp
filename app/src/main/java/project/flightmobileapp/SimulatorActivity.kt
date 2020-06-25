@@ -1,6 +1,7 @@
 package project.flightmobileapp
 
 import android.content.DialogInterface
+import android.graphics.BitmapFactory
 import android.net.http.HttpResponseCache
 
 import android.os.Bundle
@@ -10,11 +11,14 @@ import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import io.github.controlwear.virtual.joystick.android.JoystickView
+import kotlinx.android.synthetic.main.activity_simulator.*
 import kotlinx.android.synthetic.main.joystick.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import retrofit2.Response
 import java.lang.Exception
 import kotlin.math.*
 
@@ -138,12 +142,22 @@ class SimulatorActivity : AppCompatActivity() {
         }
     }
 
-    private fun getOneScreenShot() {
+    suspend  fun getOneScreenShot() {
+        try {
+            val deferedResults = SimulatorApi.retrofitService.getScreenshot().await()
+            //simulator_window.background =
+            simulator_window.
+
+        } catch (e: Exception) {
+
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
         activityFlag = true
+        getScreenShots()
         Log.i("SimulatorActivity","onResume Called")
     }
 

@@ -40,26 +40,6 @@ class ConnectionActivity : AppCompatActivity()  {
 
     override fun onResume() {
         super.onResume()
-        /*val context = this
-        var index = 0
-        if (chosenList.isEmpty()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                var stringlist: List<String> =
-                    IpDatabase.getInstance(context).ipDatabaseDao.getLastFive().map { it.address }
-                val textViewList = ArrayList<TextView>()
-                while (index < stringlist.size) {
-                    index++
-                }
-                //textViewList[0].text = "123"
-                Log.i("chosenlist",chosenList.toString())
-                Log.i("textviewlist",textViewList.toString())
-                chosenList = textViewList
-                Log.i("chosenlist",chosenList.toString())
-            }
-        } else {
-            //Change order of IP addresses in window, descending order of latest connections.
-            changeListOrder(chosenAddress, chosenList)
-        }*/
         Log.i("ConnectionActivity","onResume Called")
 
     }
