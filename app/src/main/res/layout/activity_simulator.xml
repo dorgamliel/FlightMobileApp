@@ -9,16 +9,17 @@
     android:weightSum="2">
 
     <!--Simulator screen-->
-    <View
+    <ImageView
         android:id="@+id/simulator_window"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="276dp"
         android:layout_weight="1">
-    </View>
+    </ImageView>
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="35dp"
         android:layout_weight="1">
 
         <SeekBar
