@@ -1,4 +1,5 @@
 package project.flightmobileapp
+import android.media.Image
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,7 +36,7 @@ fun setBaseUrl(address : String) {
 interface SimulatorApiService {
     @GET("/api/screenshot")
     fun getScreenshot():
-            Deferred<List<SimulatorProperty>>
+            Deferred<Response<Image>>
 
     @POST("/api/command")
     fun postCommand(@Body command : Command): Deferred<Response<Void>>
