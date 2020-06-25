@@ -19,28 +19,4 @@ class MainActivity : AppCompatActivity() {
         //Show connection page on startup.
         startActivity(intent)
     }
-    override fun onResume() {
-        super.onResume()
-        Log.i("MainActivity","onResume Called")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.i("MainActivity","onPause Called")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i("MainActivity","onStop Called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("MainActivity","onDestroy Called")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.i("MainActivity","onRestart Called")
-    }
 }

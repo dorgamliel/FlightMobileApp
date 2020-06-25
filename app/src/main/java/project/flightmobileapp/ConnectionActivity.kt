@@ -1,8 +1,6 @@
 package project.flightmobileapp
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.ColorSpace
 import android.os.Bundle
 import android.util.Log
 import android.view.animation.AnimationUtils
@@ -11,12 +9,10 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 import java.lang.Exception
 
 class ConnectionActivity : AppCompatActivity()  {
@@ -32,31 +28,6 @@ class ConnectionActivity : AppCompatActivity()  {
         setListenerForConnectButton()
         updateList()
 
-    }
-    override fun onStart() {
-        Log.i("ConnectionActivity", "onStart Called")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("ConnectionActivity","onResume Called")
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.i("ConnectionActivity","onPause Called")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i("ConnectionActivity","onStop Called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("ConnectionActivity","onDestroy Called")
     }
 
     override fun onRestart() {
@@ -86,22 +57,6 @@ class ConnectionActivity : AppCompatActivity()  {
                 address.startAnimation(animation)
             }
         }
-    }
-
-    /*This function gets a chosen address and list of IP addresses,
-    and orders them by latest connection. */
-    private fun changeListOrder(address: String, list: ArrayList<TextView>) {
-        var i = 0
-        var temp1 = address
-        //Iterate all addresses and swap until reaching line with same text.
-        while ((i != list.size - 1) && address != list[i].text) {
-            val temp2 = list[i].text
-            list[i].text = temp1
-            temp1 = temp2.toString()
-            i += 1
-        }
-        //Setting text of last address.
-        list[i].text = temp1
     }
 
     //Setting a listener for the connect button.
@@ -136,9 +91,10 @@ class ConnectionActivity : AppCompatActivity()  {
         dbHandler.ipDatabaseDao().insert(IpAddresses(address))
     }
 
+    /*Update ip addresses list in window.
+    Check for number of saved addresses, and put on screen accordingly.*/
     private fun updateList() {
         val dbHandler = IpDatabase(this)
-        //dbHandler.ipDatabaseDao().deleteAll()
         val lastAddresses = dbHandler.ipDatabaseDao().getLastFive()
         when (lastAddresses.size) {
             0 -> {}
@@ -170,11 +126,13 @@ class ConnectionActivity : AppCompatActivity()  {
         }
     }
 
+    //Connection of simulator to server.
     private suspend fun connectToServer(address: String, list: ArrayList<TextView>) {
         //If connection is successful, open simulator activity.
         // TODO should this be in IO thread?
         //TODO: exception is thrown after 10 seconds. good enough?
         try {
+            //Create a proper ip address to send server.
             var properAddress = ""
             if (!address.endsWith("/")) {
                 properAddress = address + "/"
@@ -182,39 +140,29 @@ class ConnectionActivity : AppCompatActivity()  {
                 properAddress = address
             }
             setBaseUrl(address)
-            val connectionURL = properAddress + "api/connect/"
+            //Getting connection information from server.
             val connectResult = SimulatorConnectionApi.retrofitService.connectToServer().await()
             if (connectResult.isSuccessful) {
-                val simulatorActivity = Intent(this, SimulatorActivity::class.java)
-                setBaseUrl(properAddress)
-                // Open simulator.
-                startActivity(simulatorActivity)
+                startSimActivity(properAddress, address, list)
                 // Updating parameters of IP list ordering function (called from "onRestart")
                 chosenAddress = address
                 chosenList = list
             } else {
-                Toast.makeText(this, "Could not connect to server.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Could not connect to server.",
+                    Toast.LENGTH_SHORT).show()
             }
         } catch (e : Exception) {
-            Toast.makeText(this, "Could not connect to server.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Could not connect to server.",
+                Toast.LENGTH_SHORT).show()
         }
+    }
 
-
-
-
-
-        /*if (checkConnection(address, list)) {
-            val simulatorActivity = Intent(this, SimulatorActivity::class.java)
-            // Open simulator.
-            startActivity(simulatorActivity)
-            // Updating parameters of IP list ordering function (called from "onRestart")
-            chosenAddress = address
-            chosenList = list
-            //No connection to server.
-        } else {
-            Toast.makeText(this, "Could not connect to server.", Toast.LENGTH_SHORT).show()
-        }*/
-        //Invalid server address.
+    //Stating simulator activity.
+    private fun startSimActivity(newAddress: String, address: String, list: ArrayList<TextView>) {
+        val simulatorActivity = Intent(this, SimulatorActivity::class.java)
+        setBaseUrl(newAddress)
+        // Open simulator.
+        startActivity(simulatorActivity)
     }
 
     //Gets list of addresses.
@@ -227,21 +175,4 @@ class ConnectionActivity : AppCompatActivity()  {
             findViewById(R.id.fifth_address)
         )
     }
-
-    //TODO - update function.
-    private fun checkConnection(address: String, list: ArrayList<TextView>): Boolean {
-        /*CoroutineScope(Dispatchers.IO).launch {
-            val command = ServerCommand(address, list.toString())
-            val deferedResults = SimulatorApi.retrofitService.postServer(command)
-            //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
-            var x = deferedResults.await()
-            //TODO: handle a 500 error code
-        }*/
-        return true
-    }
 }
-
-data class ServerCommand(
-    val id: String,
-    val address: String
-)

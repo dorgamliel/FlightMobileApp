@@ -1,29 +1,19 @@
 package project.flightmobileapp
 
 import android.content.DialogInterface
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.net.http.HttpResponseCache
-
 import android.os.Bundle
 import android.util.Log
-import android.webkit.WebResourceError
 import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.drawToBitmap
 import io.github.controlwear.virtual.joystick.android.JoystickView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_simulator.*
 import kotlinx.android.synthetic.main.joystick.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Response
 import java.lang.Exception
 import kotlin.math.*
 
@@ -119,17 +109,17 @@ class SimulatorActivity : AppCompatActivity() {
         b.show()
     }
 
-
+    //Sending commands to server.
     private fun sendCommand() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val command = Command(aileron, elevator, throttle, rudder)
                 val deferedResults = SimulatorApi.retrofitService.postCommand(command)
-                //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
+                //TODO: await for max 10 seconds, otherwise report connection issues
+                // (maybe possible to set timeout to 10 seconds?)
                 //TODO: handle a 500 error code
                 if (deferedResults.await().code() == 500) {
                     CoroutineScope(Dispatchers.Main).launch {
-
                         showDialog()
                     }
                 }
@@ -141,6 +131,7 @@ class SimulatorActivity : AppCompatActivity() {
         }
     }
 
+    //This function uses a flag for activity status for getting snapshots from server.
     private fun getScreenShots() {
         CoroutineScope(Dispatchers.IO).launch {
             //Run as long as activity status is not paused/stopped/destroyed.
@@ -151,14 +142,16 @@ class SimulatorActivity : AppCompatActivity() {
         }
     }
 
+    //Getting screenshot image from server.
     suspend  fun getOneScreenShot() {
         try {
             val deferedResults = SimulatorApi.retrofitService.getScreenshot().await()
             val imageStream = deferedResults.byteStream()
+            //Getting an image from stream
             val image = BitmapFactory.decodeStream(imageStream)
             val window = findViewById<ImageView>(R.id.simulator_window)
-            //simulator_window.background = x
             CoroutineScope(Dispatchers.Main).launch {
+                //Put image in layout.
                 window.setImageBitmap(image)
             }
 
@@ -171,9 +164,11 @@ class SimulatorActivity : AppCompatActivity() {
 
     }
 
+    //When activity resumes.
     override fun onResume() {
         super.onResume()
         activityFlag = true
+        //Request screenshots from server.
         getScreenShots()
         Log.i("SimulatorActivity","onResume Called")
     }
