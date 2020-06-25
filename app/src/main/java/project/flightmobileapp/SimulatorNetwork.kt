@@ -40,8 +40,10 @@ interface SimulatorApiService {
     @POST("/api/command")
     fun postCommand(@Body command : Command): Deferred<Response<Void>>
 
-    @POST
-    fun connectToServer(@Url serverURL : String): Deferred<Response<Void>>
+
+    //TODO try to change url up
+    @POST("/api/connect")
+    fun connectToServer(): Deferred<Response<Void>>
 
 }
 

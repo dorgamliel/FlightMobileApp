@@ -203,7 +203,7 @@ class ConnectionActivity : AppCompatActivity()  {
             }
             setBaseUrl(address)
             val connectionURL = properAddress + "api/connect/"
-            val connectResult = SimulatorConnectionApi.retrofitService.connectToServer(connectionURL).await()
+            val connectResult = SimulatorConnectionApi.retrofitService.connectToServer().await()
             if (connectResult.isSuccessful) {
                 val simulatorActivity = Intent(this, SimulatorActivity::class.java)
                 setBaseUrl(properAddress)

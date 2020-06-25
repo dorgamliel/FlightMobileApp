@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import kotlin.math.*
 
 
@@ -109,13 +110,20 @@ class SimulatorActivity : AppCompatActivity() {
 
     private fun sendCommand() {
         CoroutineScope(Dispatchers.IO).launch {
-            val command = Command(aileron, elevator, throttle, rudder)
-            val deferedResults = SimulatorApi.retrofitService.postCommand(command)
-            //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
-            var x = deferedResults.await()
-            //TODO: handle a 500 error code
-            if (deferedResults.await().code() == 500) {
-                showDialog()
+            try {
+                val command = Command(aileron, elevator, throttle, rudder)
+                val deferedResults = SimulatorApi.retrofitService.postCommand(command)
+                //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
+                //TODO: handle a 500 error code
+                if (deferedResults.await().code() == 500) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        showDialog()
+                    }
+                }
+            } catch (e : Exception) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    showDialog()
+                }
             }
         }
     }
