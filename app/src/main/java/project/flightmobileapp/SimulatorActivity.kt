@@ -115,6 +115,7 @@ class SimulatorActivity : AppCompatActivity() {
         dialogBuilder.setNegativeButton("Stay") { _, _ -> onResume()
         }
         val b = dialogBuilder.create()
+        b.setCanceledOnTouchOutside(false)
         b.show()
     }
 
@@ -154,11 +155,11 @@ class SimulatorActivity : AppCompatActivity() {
         try {
             val deferedResults = SimulatorApi.retrofitService.getScreenshot().await()
             val imageStream = deferedResults.byteStream()
-            val x = BitmapFactory.decodeStream(imageStream)
-            val t = findViewById<ImageView>(R.id.simulator_window)
+            val image = BitmapFactory.decodeStream(imageStream)
+            val window = findViewById<ImageView>(R.id.simulator_window)
             //simulator_window.background = x
             CoroutineScope(Dispatchers.Main).launch {
-                t.setImageBitmap(x)
+                window.setImageBitmap(image)
             }
 
         } catch (e: Exception) {
