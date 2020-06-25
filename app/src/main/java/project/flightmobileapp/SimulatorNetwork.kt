@@ -33,8 +33,8 @@ fun setBaseUrl(address : String) {
 
 
 interface SimulatorApiService {
-    @GET("all")
-    fun getIpItems():
+    @GET("/api/screenshot")
+    fun getScreenshot():
             Deferred<List<SimulatorProperty>>
 
     @POST("/api/command")
