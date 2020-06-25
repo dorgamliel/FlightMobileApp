@@ -1,9 +1,11 @@
 package project.flightmobileapp
 
 import android.content.DialogInterface
+import android.net.http.HttpResponseCache
 
 import android.os.Bundle
 import android.util.Log
+import android.webkit.WebResourceError
 import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -112,6 +114,9 @@ class SimulatorActivity : AppCompatActivity() {
             //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
             var x = deferedResults.await()
             //TODO: handle a 500 error code
+            if (deferedResults.await().code() == 500) {
+                showDialog()
+            }
         }
     }
 
