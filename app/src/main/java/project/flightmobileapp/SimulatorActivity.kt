@@ -150,12 +150,19 @@ class SimulatorActivity : AppCompatActivity() {
     suspend  fun getOneScreenShot() {
         try {
             val deferedResults = SimulatorApi.retrofitService.getScreenshot().await()
-            val x = BitmapFactory.decodeFile(deferedResults.body().toString())
+            val imageStream = deferedResults.byteStream()
+            val x = BitmapFactory.decodeStream(imageStream)
             val t = findViewById<ImageView>(R.id.simulator_window)
             //simulator_window.background = x
-            t.setImageBitmap(x)
-        } catch (e: Exception) {
+            CoroutineScope(Dispatchers.Main).launch {
+                t.setImageBitmap(x)
+            }
 
+        } catch (e: Exception) {
+            CoroutineScope(Dispatchers.Main).launch {
+                // TODO display error message to screen
+                val x = 5
+            }
         }
 
     }

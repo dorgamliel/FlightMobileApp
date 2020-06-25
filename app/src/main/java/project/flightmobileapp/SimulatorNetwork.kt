@@ -1,4 +1,5 @@
 package project.flightmobileapp
+import android.graphics.Bitmap
 import android.media.Image
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -13,10 +14,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.await
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Url
+import retrofit2.http.*
+import java.io.File
 
 
 private val moshi = Moshi.Builder()
@@ -35,8 +34,8 @@ fun setBaseUrl(address : String) {
 
 interface SimulatorApiService {
     @GET("/api/screenshot")
-    fun getScreenshot():
-            Deferred<Response<Image>>
+    @Streaming
+    fun getScreenshot(): Deferred<ResponseBody>
 
     @POST("/api/command")
     fun postCommand(@Body command : Command): Deferred<Response<Void>>
