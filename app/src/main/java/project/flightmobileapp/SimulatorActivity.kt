@@ -104,6 +104,7 @@ class SimulatorActivity : AppCompatActivity() {
 
     //The dialog when there is a connection problem.
     private fun showDialog() {
+        onPause()
         val dialogBuilder = AlertDialog.Builder(this)
         //Dialog message.
         dialogBuilder.setMessage("It looks like there is a network problem. Would you like " +
@@ -111,7 +112,8 @@ class SimulatorActivity : AppCompatActivity() {
         //Dialog buttons.
         dialogBuilder.setPositiveButton("Return",
             DialogInterface.OnClickListener (function = positiveButtonClick))
-        dialogBuilder.setNegativeButton("Stay") { _, _ -> }
+        dialogBuilder.setNegativeButton("Stay") { _, _ -> onResume()
+        }
         val b = dialogBuilder.create()
         b.show()
     }
@@ -126,6 +128,7 @@ class SimulatorActivity : AppCompatActivity() {
                 //TODO: handle a 500 error code
                 if (deferedResults.await().code() == 500) {
                     CoroutineScope(Dispatchers.Main).launch {
+
                         showDialog()
                     }
                 }
