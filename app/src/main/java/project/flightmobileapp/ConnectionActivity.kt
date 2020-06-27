@@ -136,7 +136,6 @@ class ConnectionActivity : AppCompatActivity()  {
                 val simulatorActivity = Intent(this, SimulatorActivity::class.java)
                 // Open simulator.
                 startActivity(simulatorActivity)
-                startSimActivity(properAddress, address, list)
                 // Updating parameters of IP list ordering function (called from "onRestart")
                 chosenAddress = address
                 chosenList = list
@@ -148,14 +147,6 @@ class ConnectionActivity : AppCompatActivity()  {
             Toast.makeText(this, "Could not connect to server.",
                 Toast.LENGTH_SHORT).show()
         }
-    }
-
-    //Stating simulator activity.
-    private fun startSimActivity(newAddress: String, address: String, list: ArrayList<TextView>) {
-        val simulatorActivity = Intent(this, SimulatorActivity::class.java)
-        setBaseUrl(newAddress)
-        // Open simulator.
-        startActivity(simulatorActivity)
     }
 
     //Gets list of addresses.
