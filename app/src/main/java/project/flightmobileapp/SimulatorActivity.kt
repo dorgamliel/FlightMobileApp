@@ -28,7 +28,8 @@ import java.lang.Exception
 import kotlin.math.*
 
 
-
+val TIMEOUT = 1
+val INTERNAL_SERVER_ERROR = 2
 class SimulatorActivity : AppCompatActivity() {
     private var aileron: Double = 0.0
     private var prevAileron: Double = 0.0
@@ -55,16 +56,21 @@ class SimulatorActivity : AppCompatActivity() {
         joystickView.setOnMoveListener (object: JoystickView.OnMoveListener {
             override fun onMove(angle: Int, strength: Int) {
                 //Setting joystick's aileron and elevator.
+                var sendFlag = false
                 aileron = cos(Math.toRadians(angle.toDouble())) * strength / 100
                 elevator = sin(Math.toRadians(angle.toDouble())) * strength / 100
                 //Replace values if difference is more than 1 percent.
                 if (abs(aileron - prevAileron) > 0.01) {
                     prevAileron = aileron
+                    sendFlag = true
                 }
                 if (abs(elevator - prevElevator) > 0.01) {
                     prevElevator = elevator
+                    sendFlag = true
                 }
-                sendCommand()
+                if (sendFlag) {
+                    sendCommand()
+                }
             }
         })
     }
@@ -103,12 +109,19 @@ class SimulatorActivity : AppCompatActivity() {
     }
 
     //The dialog when there is a connection problem.
-    private fun showDialog() {
+    private fun showErrorDialog(errorType : Int) {
         onPause()
         val dialogBuilder = AlertDialog.Builder(this)
         //Dialog message.
-        dialogBuilder.setMessage("It looks like there is a network problem. Would you like " +
-                "to return to main menu?")
+        if (errorType == TIMEOUT) {
+            dialogBuilder.setMessage(
+                "It looks like there is a network problem. Would you like " +
+                        "to return to main menu?")
+        } else {
+            dialogBuilder.setMessage(
+                "It looks like and unexpected error has occurred. Would you like " +
+                        "to return to main menu?")
+        }
         //Dialog buttons.
         dialogBuilder.setPositiveButton("Return",
             DialogInterface.OnClickListener (function = positiveButtonClick))
@@ -119,23 +132,23 @@ class SimulatorActivity : AppCompatActivity() {
         b.show()
     }
 
-
+    // send command to server with current flight control values
     private fun sendCommand() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val command = Command(aileron, elevator, throttle, rudder)
                 val deferedResults = SimulatorApi.retrofitService.postCommand(command)
-                //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
-                //TODO: handle a 500 error code
+                // check for server error (could be syntax error)
                 if (deferedResults.await().code() == 500) {
                     CoroutineScope(Dispatchers.Main).launch {
 
-                        showDialog()
+                        showErrorDialog(INTERNAL_SERVER_ERROR)
                     }
                 }
+                // timeout error
             } catch (e : Exception) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    showDialog()
+                    showErrorDialog(TIMEOUT)
                 }
             }
         }
@@ -151,10 +164,11 @@ class SimulatorActivity : AppCompatActivity() {
         }
     }
 
-    suspend  fun getOneScreenShot() {
+    private suspend fun getOneScreenShot() {
         try {
-            val deferedResults = SimulatorApi.retrofitService.getScreenshot().await()
-            val imageStream = deferedResults.byteStream()
+            // get screenshot and convert content to bytestream
+            val screenshotResponse = SimulatorApi.retrofitService.getScreenshot().await()
+            val imageStream = screenshotResponse.byteStream()
             val image = BitmapFactory.decodeStream(imageStream)
             val window = findViewById<ImageView>(R.id.simulator_window)
             //simulator_window.background = x
@@ -164,8 +178,11 @@ class SimulatorActivity : AppCompatActivity() {
 
         } catch (e: Exception) {
             CoroutineScope(Dispatchers.Main).launch {
-                // TODO display error message to screen
-                val x = 5
+                if (e.message.equals("HTTP 500 Internal Server Error")) {
+                    showErrorDialog(INTERNAL_SERVER_ERROR)
+                } else {
+                    showErrorDialog((TIMEOUT))
+                }
             }
         }
 

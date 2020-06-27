@@ -31,7 +31,7 @@ fun setBaseUrl(address : String) {
 
 
 
-
+// all api HTTP requests available
 interface SimulatorApiService {
     @GET("/api/screenshot")
     @Streaming
@@ -41,7 +41,6 @@ interface SimulatorApiService {
     fun postCommand(@Body command : Command): Deferred<Response<Void>>
 
 
-    //TODO try to change url up
     @POST("/api/connect")
     fun connectToServer(): Deferred<Response<Void>>
 

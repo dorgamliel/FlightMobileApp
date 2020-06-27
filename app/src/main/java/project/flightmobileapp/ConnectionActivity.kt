@@ -115,7 +115,6 @@ class ConnectionActivity : AppCompatActivity()  {
             //An empty IP address does not affect button.
             if (address.isNotEmpty()) {
                 addToDb(address)
-                // TODO is this where it should be launched?
                 CoroutineScope(Dispatchers.Main).launch {
                     connectToServer(address, list)
                 }
@@ -172,21 +171,12 @@ class ConnectionActivity : AppCompatActivity()  {
 
     private suspend fun connectToServer(address: String, list: ArrayList<TextView>) {
         //If connection is successful, open simulator activity.
-        // TODO should this be in IO thread?
-        //TODO: exception is thrown after 10 seconds. good enough?
         try {
-            var properAddress = ""
-            if (!address.endsWith("/")) {
-                properAddress = address + "/"
-            } else {
-                properAddress = address
-            }
+            // set given URL to be BASE_URL of retrofitService and attempt to connect to simulator
             setBaseUrl(address)
-            val connectionURL = properAddress + "api/connect/"
             val connectResult = SimulatorConnectionApi.retrofitService.connectToServer().await()
             if (connectResult.isSuccessful) {
                 val simulatorActivity = Intent(this, SimulatorActivity::class.java)
-                setBaseUrl(properAddress)
                 // Open simulator.
                 startActivity(simulatorActivity)
                 // Updating parameters of IP list ordering function (called from "onRestart")
@@ -226,18 +216,6 @@ class ConnectionActivity : AppCompatActivity()  {
             findViewById(R.id.fourth_address),
             findViewById(R.id.fifth_address)
         )
-    }
-
-    //TODO - update function.
-    private fun checkConnection(address: String, list: ArrayList<TextView>): Boolean {
-        /*CoroutineScope(Dispatchers.IO).launch {
-            val command = ServerCommand(address, list.toString())
-            val deferedResults = SimulatorApi.retrofitService.postServer(command)
-            //TODO: await for max 10 seconds, otherwise report connection issues (maybe possible to set timeout to 10 seconds?)
-            var x = deferedResults.await()
-            //TODO: handle a 500 error code
-        }*/
-        return true
     }
 }
 
