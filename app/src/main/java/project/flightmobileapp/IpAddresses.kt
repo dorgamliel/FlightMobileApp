@@ -34,13 +34,13 @@ abstract class IpDatabase : RoomDatabase() {
         private var INSTANCE: IpDatabase? = null
         private var lock = Any()
         operator fun invoke(context: Context) = INSTANCE ?:
-            synchronized(lock) {
-                INSTANCE
-                    ?: newDatabase(context)
+        synchronized(lock) {
+            INSTANCE
+                ?: newDatabase(context)
                     .also { INSTANCE = it }
-            }
         }
     }
+}
 
 private fun newDatabase(context: Context): IpDatabase {
     return Room.databaseBuilder(
